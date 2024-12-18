@@ -20,11 +20,6 @@ class TrainPage:
         # Initialize UI
         self._init_ui()
 
-    # def clear_body(self):
-    #     """Clear all widgets inside the body frame."""
-    #     for widget in self.body_frame.winfo_children():
-    #         widget.destroy()
-
     def _init_ui(self):
         """Initialize the UI elements for the Train Page."""
         clear_body(self.body_frame)
