@@ -10,7 +10,7 @@ def clear_body(body_frame):
     for widget in body_frame.winfo_children():
         widget.destroy()
 
-def get_server_port():
+def get_server_port() -> int:
     """Connect to the bridge to get the least loaded server's port."""
     try:
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as bridge_socket:

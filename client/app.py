@@ -3,6 +3,10 @@ from controller import home, upload_dataset, annotate, train, predict, exit_app
 import ttkbootstrap as ttk
 
 class App:
+    """
+    Aplikasi utama yang menggunakan paradigma OOP untuk memisahkan tampilan dan logika.
+    Fungsionalitas utama aplikasi adalah pengaturan tampilan dengan framework Tkinter.
+    """
     def __init__(self):
         """Initialize the main application."""
         self.root = ttk.Window(themename="darkly")
