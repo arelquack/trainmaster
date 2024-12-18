@@ -6,33 +6,50 @@ from upload.upload_dataset_page import UploadDatasetPage
 from utils import clear_body
 
 def switch_page_dummy(page_name):
-    print(f"Berpindah ke halaman: {page_name}")
+    """
+    Dummy function for switching pages.
+    Args:
+        page_name (str): Name of the page to switch to.
+    """
+    print(f"Switching to page: {page_name}")
+
+def navigate_to_page(page_class, body_frame, *args, **kwargs):
+    """
+    Clears the body frame and initializes the given page class.
+    Args:
+        page_class (type): The class of the page to instantiate.
+        body_frame (ttk.Frame): The frame to display the page content.
+        *args: Positional arguments for the page class.
+        **kwargs: Keyword arguments for the page class.
+    """
+    clear_body(body_frame)
+    page_class(body_frame, *args, **kwargs)
 
 def home(body_frame):
-    """Home Page Content."""
-    clear_body(body_frame)
-    HomePage(body_frame, switch_page_dummy)
+    """Load the Home Page."""
+    navigate_to_page(HomePage, body_frame, switch_page_dummy)
 
 def upload_dataset(body_frame):
-    """Upload Dataset Page."""
-    clear_body(body_frame)
-    UploadDatasetPage(body_frame)
+    """Load the Upload Dataset Page."""
+    navigate_to_page(UploadDatasetPage, body_frame)
 
 def annotate(body_frame):
-    """Annotate Page."""
-    clear_body(body_frame)
-    AnnotatePage(body_frame)
+    """Load the Annotate Page."""
+    navigate_to_page(AnnotatePage, body_frame)
 
 def train(body_frame):
-    """Train Page."""
-    clear_body(body_frame)
-    TrainPage(body_frame)
+    """Load the Train Page."""
+    navigate_to_page(TrainPage, body_frame)
 
 def predict(body_frame):
-    """Predict Page."""
-    clear_body(body_frame)
-    PredictPage(body_frame)
+    """Load the Predict Page."""
+    navigate_to_page(PredictPage, body_frame)
 
 def exit_app(root):
+    """
+    Exit the application.
+    Args:
+        root (ttk.Window): The main application window.
+    """
     root.quit()
     root.destroy()

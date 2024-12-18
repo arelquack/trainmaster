@@ -4,28 +4,43 @@ import ttkbootstrap as ttk
 
 class App:
     """
-    Aplikasi utama yang menggunakan paradigma OOP untuk memisahkan tampilan dan logika.
-    Fungsionalitas utama aplikasi adalah pengaturan tampilan dengan framework Tkinter.
+    Main application class for a menu interface.
+
+    Attributes:
+        root (ttk.Window): The main application window.
+        body_frame (ttk.Frame): The frame for displaying content.
     """
     def __init__(self):
         """Initialize the main application."""
-        self.root = ttk.Window(themename="darkly")
-        self.root.title("Menu Interface")
-        self.root.geometry("800x500")
-        self.root.configure(bg="white")
+        self.root = self._initialize_window()
+        self.body_frame = self._initialize_body_frame()
+        self._initialize_menu_bar()
+        home(self.body_frame)  # Load the Home Page by default
 
-        # Body frame
-        self.body_frame = ttk.Frame(self.root, bootstyle="dark")
-        self.body_frame.grid(row=1, column=0, sticky="nsew")  # Pastikan body_frame menempati seluruh ruang
+    def _initialize_window(self):
+        """Set up the main application window."""
+        root = ttk.Window(themename="darkly")
+        root.title("Menu Interface")
+        root.geometry("800x500")
+        root.configure(bg="white")
 
-        # Konfigurasi grid untuk body_frame agar mengisi ruang
-        self.root.grid_rowconfigure(0, weight=0)  # Row 0 untuk menu bar (tidak fleksibel)
-        self.root.grid_rowconfigure(1, weight=1)  # Row 1 untuk body_frame (fleksibel)
-        self.root.grid_columnconfigure(0, weight=1)  # Kolom 0 untuk body_frame dan menu bar (fleksibel)
+        # Configure grid layout for scalability
+        root.grid_rowconfigure(0, weight=0)  # Row 0 for menu bar (fixed height)
+        root.grid_rowconfigure(1, weight=1)  # Row 1 for body_frame (flexible height)
+        root.grid_columnconfigure(0, weight=1)  # Column 0 spans the entire width
 
-        # Menu bar
+        return root
+
+    def _initialize_body_frame(self):
+        """Create and configure the body frame."""
+        body_frame = ttk.Frame(self.root, bootstyle="dark")
+        body_frame.grid(row=1, column=0, sticky="nsew")
+        return body_frame
+
+    def _initialize_menu_bar(self):
+        """Set up the menu bar with buttons."""
         button_frame = ttk.Frame(self.root, bootstyle="secondary")
-        button_frame.grid(row=0, column=0, sticky="ew")  # Letakkan menu bar di row 0
+        button_frame.grid(row=0, column=0, sticky="ew")
 
         buttons = [
             ("HOME", home),
@@ -35,12 +50,8 @@ class App:
             ("PREDICT", predict),
             ("EXIT", exit_app),
         ]
-        
-        # Inisialisasi MenuBar
+
         MenuBar(self.root, button_frame, buttons, self.body_frame)
-        
-        # Muat halaman awal (Home Page)
-        home(self.body_frame)
 
     def run(self):
         """Start the application."""
