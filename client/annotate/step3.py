@@ -6,7 +6,12 @@ from PIL import Image, ImageTk
 import os
 
 def show_step3(body_frame, dataset_name):
-    """Step 3: Display images, annotate with rectangles, and save labels in YOLOv8 format."""
+    """Step 3: Display images, annotate with rectangles, and save labels in YOLOv8 format.
+    
+    Parameters:
+    body_frame (tk.Frame): The frame where UI elements will be displayed.
+    dataset_name (str): The name of the selected dataset.
+    """
     # Clear existing content
     for widget in body_frame.winfo_children():
         widget.destroy()
@@ -92,21 +97,24 @@ def show_step3(body_frame, dataset_name):
 
     def display_image():
         """Load and display the current image."""
-        image_path = os.path.join(dataset_path, image_files[current_image_index])
-        img = Image.open(image_path)
-        img = img.resize((500, 500))  # Resize for display purposes
-        img_tk = ImageTk.PhotoImage(img)
+        try:
+            image_path = os.path.join(dataset_path, image_files[current_image_index])
+            img = Image.open(image_path)
+            img = img.resize((500, 500))  # Resize for display purposes
+            img_tk = ImageTk.PhotoImage(img)
 
-        # Clear the canvas
-        canvas.delete("all")
-        canvas.create_image(0, 0, anchor="nw", image=img_tk)
-        canvas.image = img_tk  # Keep a reference to avoid garbage collection
+            # Clear the canvas
+            canvas.delete("all")
+            canvas.create_image(0, 0, anchor="nw", image=img_tk)
+            canvas.image = img_tk  # Keep a reference to avoid garbage collection
 
-        # Update the current image name
-        image_name_label.config(text=image_files[current_image_index])
+            # Update the current image name
+            image_name_label.config(text=image_files[current_image_index])
 
-        # Clear previous rectangles
-        rectangles.clear()
+            # Clear previous rectangles
+            rectangles.clear()
+        except Exception as e:
+            messagebox.showerror("Error", f"Failed to load image: {str(e)}")
 
     def navigate_image(step):
         """Navigate between images and save rectangles to file before moving."""
@@ -132,15 +140,18 @@ def show_step3(body_frame, dataset_name):
         image_name = os.path.splitext(image_files[current_image_index])[0]
         txt_path = os.path.join(dataset_path, f"{image_name}.txt")
 
-        with open(txt_path, "w") as file:
-            for label_name, x1, y1, x2, y2 in rectangles:
-                # Convert rectangle coordinates to YOLOv8 format (normalized center x, center y, width, height)
-                label_index = label_index_map[label_name]
-                center_x = (x1 + x2) / 2 / 500
-                center_y = (y1 + y2) / 2 / 500
-                width = abs(x2 - x1) / 500
-                height = abs(y2 - y1) / 500
-                file.write(f"{label_index} {center_x:.6f} {center_y:.6f} {width:.6f} {height:.6f}\n")
+        try:
+            with open(txt_path, "w") as file:
+                for label_name, x1, y1, x2, y2 in rectangles:
+                    # Convert rectangle coordinates to YOLOv8 format (normalized center x, center y, width, height)
+                    label_index = label_index_map[label_name]
+                    center_x = (x1 + x2) / 2 / 500
+                    center_y = (y1 + y2) / 2 / 500
+                    width = abs(x2 - x1) / 500
+                    height = abs(y2 - y1) / 500
+                    file.write(f"{label_index} {center_x:.6f} {center_y:.6f} {width:.6f} {height:.6f}\n")
+        except Exception as e:
+            messagebox.showerror("Error", f"Failed to save annotations: {str(e)}")
 
     def click_event(event):
         """Handle mouse clicks for initiating and finalizing the rectangle."""
