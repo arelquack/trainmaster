@@ -4,6 +4,13 @@ import logging
 
 class DatasetModel:
     def __init__(self):
+        """
+        Initialize the DatasetModel.
+
+        Sets up supported image extensions and logging. Supported image extensions are
+        .png, .jpg, .jpeg, .bmp, and .tiff. The logging level is set to INFO and the format
+        is set to "%(asctime)s - %(levelname)s - %(message)s".
+        """
         self.supported_extensions = (".png", ".jpg", ".jpeg", ".bmp", ".tiff")
         # Setup logging
         logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")

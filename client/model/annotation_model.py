@@ -4,6 +4,12 @@ import logging
 
 class AnnotationModel:
     def __init__(self):
+        """
+        Initialize the AnnotationModel object.
+
+        Attributes:
+            main_dataset_dir (str): Path to the main dataset directory.
+        """
         self.main_dataset_dir = os.path.join(os.getcwd(), "list_of_dataset")
         # Setup logging
         logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
